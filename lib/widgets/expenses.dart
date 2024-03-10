@@ -21,7 +21,8 @@ class _ExpensesState extends State<Expenses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Center(child: Text('Expense Tracker')),
-      actions: [
+        backgroundColor: const Color.fromARGB(115, 144, 114,0),
+        actions: [
         IconButton(
             onPressed: (){
               showModalBottomSheet(
