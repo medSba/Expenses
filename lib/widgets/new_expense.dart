@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../models/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -13,6 +14,8 @@ class _NewExpenseState extends State<NewExpense> {
   final _amount = TextEditingController();
   DateTime? _selectedDate ;
   final formatter = DateFormat.yMd();
+  Category _selectedCategory = Category.travel;
+
   @override
   void dispose() {
     super.dispose();
@@ -68,14 +71,30 @@ class _NewExpenseState extends State<NewExpense> {
                 ),
             ],
           ),
+          const SizedBox(height: 20,),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                  items: Category.values.map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                          child: Text(e.name.toUpperCase())
+                      )).toList(),
+                  onChanged: (newCat){
+                    if(newCat==null){
+                      return;
+                    }
+                    setState(() {
+                      _selectedCategory=newCat;
+                    });
+                  }),
+              const Spacer(),
               TextButton(
                   onPressed: (){
                     Navigator.pop(context);
                   },
                   child: const Text('Cancel')),
-              const Spacer(),
               ElevatedButton(
                   onPressed: (){},
                   child: const Text('Save Expense'))
