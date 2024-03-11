@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import '../models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -96,7 +98,35 @@ class _NewExpenseState extends State<NewExpense> {
                   },
                   child: const Text('Cancel')),
               ElevatedButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    final double? entredAmount = double.tryParse(_amount.text);
+                    final bool amountIsInvalid = entredAmount == null || entredAmount<=0;
+
+                    if(_title.text.trim().isEmpty || amountIsInvalid || _selectedDate==null){
+                      showDialog(
+                          context: context,
+                          builder: (ctx)=>AlertDialog(
+                            title: const Text('Invalid Input'),
+                            content: const Text('Please make sure a valid title, amount, date and category was entered'),
+                            actions: [
+                              TextButton(
+                                  onPressed: (){Navigator.pop(ctx);},
+                                  child: const Text('Okay'))
+                            ],
+                          )
+                      );
+                    }else{
+                      widget.onAddExpense(
+                        Expense(
+                            category: _selectedCategory,
+                            title: _title.text,
+                            amount: entredAmount,
+                            date: _selectedDate!)
+                      );
+                      Navigator.pop(context);
+                    }
+
+                  },
                   child: const Text('Save Expense'))
             ],
           )

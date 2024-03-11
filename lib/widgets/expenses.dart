@@ -16,7 +16,13 @@ class _ExpensesState extends State<Expenses> {
     Expense(category: Category.work, title: 'FireBase', amount: 100.0, date: DateTime.now()),
     Expense(category: Category.leisure, title: 'Cinema', amount: 80.49, date: DateTime.now()),
   ];
-  
+
+  void _addExpenses(Expense expense){
+    setState(() {
+      _registeredExpense.add(expense);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +33,7 @@ class _ExpensesState extends State<Expenses> {
             onPressed: (){
               showModalBottomSheet(
                   context: context,
-                  builder: (ctx)=>const NewExpense(),
+                  builder: (ctx)=> NewExpense(onAddExpense: _addExpenses,),
               );
             },
             icon: const Icon(Icons.add)),
